@@ -1,0 +1,50 @@
+__manifest__:
+  name: "Name of your 'lightflow' sequence"
+  description: |
+    This is the template where you can define
+    a sequence of commands.
+  module: "proto.lightflow_pb2"
+  requirements:
+    - protobuf == v28.0
+  tags: ["AUTOMATION"]
+
+sequence:
+    - name: "Test PIPELINE with protobuf"
+      env: "TEST"
+      os: "your environment os"
+      before_pipeline:
+        - name: "before pipeline task"
+          type: "SYSTEM"
+          before_task: []
+          command:
+            name: "ping"
+            parameters: 
+              - "8.8.8.8"
+          after_task: []
+      tasks:
+        - name: "Get server name"
+          type: "SYSTEM"
+          before_task:
+            - name: "dir"
+              parameters:
+                - "."
+            - name: "whoami"
+              parameters: []
+          command:
+            name: "hostname"
+            parameters: []
+          after_task:
+            - name: "dir"
+              parameters:
+                - "."
+            - name: "whoami"
+              parameters: []
+      after_pipeline:
+        - name: "Clean environment"
+          type: "SYSTEM"
+          before_task: []
+          command:
+            name: "echo"
+            parameters: 
+              - "'deleting environment'"
+          after_task: []

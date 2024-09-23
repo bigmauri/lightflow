@@ -1,0 +1,44 @@
+name: Publish Protobuf and Create Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Trigger when a version tag is pushed, e.g., v1.0.0
+
+permissions:
+  contents: write  # Allows pushing changes and creating releases
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Upload Protobuf file as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: lightflow-${{ github.ref_name }}
+          path: lightflow.proto
+
+      - name: Create GitHub Release
+        id: create_release  # Store the result of this step for later use
+        uses: actions/create-release@v1
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          draft: true
+          prerelease: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PUBLISH_TOKEN }}
+
+      - name: Upload Protobuf file to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PUBLISH_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: lightflow.proto
+          asset_name: lightflow-${{ github.ref_name }}.proto
+          asset_content_type: application/octet-stream

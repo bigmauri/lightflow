@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package light.cicd;
+
+// Define the Command message
+message Command {
+    string id = 1;
+    string name = 2;
+    repeated string parameters = 3;
+    int64 timestamp = 4;
+}
+
+// Define the Task message that includes a TaskCommand
+message Task {
+    string id = 1;
+    string name = 2;
+
+    enum TaskType {
+        UNKNOWN = 0;
+        SYSTEM = 1;
+        CI = 2;
+        CD = 3;
+    }
+    TaskType type = 3;
+
+    repeated Command before_task = 4;
+    Command command = 5;
+    repeated Command after_task = 6;
+
+    int32 priority = 7;
+    bool is_urgent = 8;
+    int64 timestamp = 9;
+    
+}
+
+// Define the Pipeline message that contains multiple tasks
+message Pipeline {
+	string id = 1;
+    string name = 2;
+    string os = 3;
+
+    enum Environment {
+        UNKNOWN = 0;
+        DEVELOPMENT = 1;
+        STAGING = 2;
+        TEST = 3;
+        PRODUCTION = 4;
+    }
+    Environment env = 4;
+
+
+    repeated Task before_pipeline = 5;
+    repeated Task tasks = 6;
+    repeated Task after_pipeline = 7;
+
+    int64 timestamp = 8;
+}
