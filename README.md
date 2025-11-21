@@ -22,4 +22,4 @@
 Lightflow requires the following services to be running:
 
 1.  **Python 3+**
-2.  **Protobu** Used to build the sequence structure definition.
+2.  **Protobuf** Used to build the sequence structure definition.
