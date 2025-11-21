@@ -1,13 +1,12 @@
 syntax = "proto3";
 
-package light.cicd;
+package lightflow;
 
 // Define the Command message
 message Command {
     string id = 1;
     string name = 2;
     repeated string parameters = 3;
-    int64 timestamp = 4;
 }
 
 // Define the Task message that includes a TaskCommand
@@ -24,7 +23,7 @@ message Task {
     TaskType type = 3;
 
     repeated Command before_task = 4;
-    Command command = 5;
+    repeated Command commands = 5;
     repeated Command after_task = 6;
 
     int32 priority = 7;
