@@ -1,0 +1,39 @@
+sequence:
+    - name: "[TEST] Lightflow with protobuf v33"
+      env: "TEST"
+      os: "macOS"
+      before_pipeline:
+        - name: "pipeline started"
+          type: "UNKNOWN"
+          before_task:
+            - <<: *echo
+              parameters:
+                  - "STARTED"
+            - *protoc_version
+            - *git_version
+          commands:
+            - *ping_google
+            - *ping_cloudflare
+          after_task: []
+      tasks:
+        - name: "Get server name"
+          type: "UNKNOWN"
+          before_task:
+            - *disk_space_root
+            - *memory_usage
+            - *cpu_usage
+          commands:
+            - *uname
+          after_task:
+            - *disk_space_root
+            - *memory_usage
+            - *cpu_usage
+      after_pipeline:
+        - name: "pipeline completed"
+          type: "UNKNOWN"
+          before_task: []
+          commands:
+            - <<: *echo
+              parameters:
+                  - "COMPLETED"
+          after_task: []

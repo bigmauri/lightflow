@@ -1,0 +1,9 @@
+__manifest__:
+  name: "Module 'lightflow'"
+  description: |
+    This is the sequence where you can define
+    a sequence of commands.
+  module: "proto.lightflow_pb2"
+  requirements:
+    - protobuf == v33.0
+  tags: ["AUTOMATION"]
