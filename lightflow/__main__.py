@@ -1,16 +1,22 @@
 import argparse
 import base64
 import importlib
+import logging
 import json
 import os
 import requests
 import subprocess
 import yaml
 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s %(levelname)s: %(message)s"
+)
+logger = logging.getLogger(__name__)
+
 from lightflow import IProto
 from lightflow import get_proto_tasks as gpt
 from lightflow.exe import execute_pipeline, run_temp_sh
-
 
 def serialize(args):
 
@@ -39,7 +45,7 @@ def serialize(args):
             encode_message = base64.urlsafe_b64encode(ppl.serialize()).decode("utf-8")
         if args.execute:
             script_text = f"""
-            python -m lightflow deserialize --message {encode_message} --proto-module {IProto._IProto__PROTO_MODULE}
+            lf deserialize --message {encode_message} --proto-module {IProto._IProto__PROTO_MODULE}
             """
             run_temp_sh(script_text)
         else:

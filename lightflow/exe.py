@@ -1,3 +1,4 @@
+import logging
 import os
 import shlex
 import stat
@@ -50,47 +51,49 @@ def format_command(cmd):
     return " ".join(parts)
 
 def run_command(cmd):
-    print(f"\n> {' '.join(cmd)}")
+    logging.info("<<<<<"*3)
+    logging.info(f"> {' '.join(cmd)}")
     if "|" in cmd:
         subprocess.run(' '.join(cmd), shell=True)
     else:
         subprocess.run(cmd, shell=False)
+    logging.info(">>>>>"*3)
 
 def print_task(task, indent, dry_run=False):
     pad = " " * indent
-    print(f"{pad}Task: {task.name} (type={task.type})")
+    logging.info(f"{pad}Task: {task.name} (type={task.type})")
     if task.priority:
-        print(f"{pad}  Priority: {task.priority}")
-    print(f"{pad}  Urgent: {task.is_urgent}")
-    print(f"{pad}  Timestamp: {task.timestamp}")
+        logging.info(f"{pad}  Priority: {task.priority}")
+    logging.info(f"{pad}  Urgent: {task.is_urgent}")
+    logging.info(f"{pad}  Timestamp: {task.timestamp}")
 
     def shell(title, commands):
         if not commands:
             return
-        print(f"{pad}  {title}:")
+        logging.debug(f"{pad}  {title}:")
         for cmd in commands:
             if dry_run:
-                print(f"{pad}    $ {format_command(cmd)}")
+                logger.debug(f"{pad}    $ {format_command(cmd)}")
             else:
                 run_command([cmd.name] + list(cmd.parameters))
 
-    shell("\n\nBefore task", task.before_task)
-    shell("\n\nCommands", task.commands)
-    shell("\n\nAfter task", task.after_task)
+    shell("Before task", task.before_task)
+    shell("Commands", task.commands)
+    shell("After task", task.after_task)
 
 def execute_pipeline(pipeline, dry_run):
-    print(f"\nPipeline: {pipeline.name} (id={pipeline.id})")
-    print(f"  OS: {pipeline.os}")
-    print(f"  Environment: {pipeline.Environment.keys()[pipeline.env]}")
-    print(f"  Timestamp: {pipeline.timestamp}")
+    logging.info(f" Pipeline: {pipeline.name} (id={pipeline.id})")
+    logging.info(f"  OS: {pipeline.os}")
+    logging.info(f"  Environment: {pipeline.Environment.keys()[pipeline.env]}")
+    logging.info(f"  Timestamp: {pipeline.timestamp}")
 
     def print_task_section(title, tasks):
         if not tasks:
             return
-        print(f"\n{title}:")
+        logging.debug(f"{title}")
         for task in tasks:
             print_task(task, 4, dry_run)
 
-    print_task_section("Before pipeline", pipeline.before_pipeline)
-    print_task_section("Main tasks", pipeline.tasks)
-    print_task_section("After pipeline", pipeline.after_pipeline)
+    print_task_section("BEFORE PIPELINE", pipeline.before_pipeline)
+    print_task_section("MAIN TASKS", pipeline.tasks)
+    print_task_section("AFTER PIPELINE", pipeline.after_pipeline)
