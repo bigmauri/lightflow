@@ -23,7 +23,9 @@ sequence:
             - *memory_usage
             - *cpu_usage
           commands:
+            - *whoami
             - *registry_user_catalog
+            - *whoami
           after_task:
             - *disk_space_root
             - *memory_usage
