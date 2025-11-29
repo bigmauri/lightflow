@@ -5,8 +5,8 @@ commands:
        - "-K"
        - "~/.docker_registry_auth"
        - "https://registry.home/v2/_catalog"
-  - &clear
-    name: "clear"
+  - &whoami
+    name: "whoami"
     parameters: []
   - &protoc_version
     name: "protoc"
@@ -33,48 +33,10 @@ commands:
       - "-c"
       - "3"
       - "8.8.8.8"
-  - &ping_cloudflare
-    name: "ping"
-    parameters:
-      - "-c"
-      - "3"
-      - "1.1.1.1"
-  - &curl_google
-    name: "curl"
-    parameters:
-      - "-I"
-      - "-s"
-      - "-o"
-      - "/dev/null"
-      - "-w"
-      - "%{http_code}"
-      - "https://www.google.com"
-  - &curl_github
-    name: "curl"
-    parameters:
-      - "-I"
-      - "-s"
-      - "-o"
-      - "/dev/null"
-      - "-w"
-      - "%{http_code}"
-      - "https://www.github.com"
   - &traceroute_google
     name: "traceroute"
     parameters:
       - "8.8.8.8"
-  - &nc_google_http
-    name: "nc"
-    parameters:
-      - "-vz"
-      - "google.com"
-      - "80"
-  - &nc_github_https
-    name: "nc"
-    parameters:
-      - "-vz"
-      - "github.com"
-      - "443"
   - &disk_space_root
     name: "df"
     parameters:
@@ -101,8 +63,3 @@ commands:
       - "|"
       - "grep"
       - "'CPU usage'"
-  - &last_syslog_errors
-    name: "grep"
-    parameters:
-      - "error"
-      - "/var/log/syslog"
