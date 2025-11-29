@@ -14,7 +14,6 @@ sequence:
             - *git_version
           commands:
             - *ping_google
-            - *ping_cloudflare
           after_task: []
       tasks:
         - name: "Get server name"
