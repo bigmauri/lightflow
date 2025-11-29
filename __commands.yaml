@@ -3,7 +3,7 @@ commands:
     name: "curl"
     parameters:
        - "-K"
-       - "~/.docker_registry_auth"
+       - "/home/$(whoami)/.docker_registry_auth"
        - "https://registry.home/v2/_catalog"
   - &whoami
     name: "whoami"

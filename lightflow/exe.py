@@ -50,10 +50,14 @@ def format_command(cmd):
     parts = [cmd.name] + list(cmd.parameters)
     return " ".join(parts)
 
+def need_shell(cmd):
+    result = [True for e in cmd if "$(" in e]
+    return any(result)
+
 def run_command(cmd):
     logging.info("<<<<<"*3)
     logging.info(f"> {' '.join(cmd)}")
-    if "|" in cmd:
+    if "|" in cmd or need_shell(cmd):
         subprocess.run(' '.join(cmd), shell=True)
     else:
         subprocess.run(cmd, shell=False)
