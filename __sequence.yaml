@@ -10,6 +10,7 @@ sequence:
               parameters:
                   - "STARTED"
             - *protoc_version
+            - *docker_version
             - *git_version
           commands:
             - *ping_google
@@ -23,7 +24,9 @@ sequence:
             - *memory_usage
             - *cpu_usage
           commands:
-            - *uname
+            - *registry_user
+            - *registry_pwd
+            - *registry_user_catalog
           after_task:
             - *disk_space_root
             - *memory_usage
