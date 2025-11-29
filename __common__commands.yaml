@@ -1,0 +1,74 @@
+commands:
+  - &registry_user_catalog
+    name: "curl"
+    parameters:
+       - "-K"
+       - "/home/$(whoami)/.docker_registry_auth"
+       - "https://registry.home/v2/_catalog"
+  - &whoami
+    name: "whoami"
+    parameters: []
+  - &protoc_version
+    name: "protoc"
+    parameters:
+      - "--version"
+  - &docker_version
+    name: "docker"
+    parameters:
+      - "--version"
+  - &git_version
+    name: "git"
+    parameters:
+      - "--version"
+  - &uname
+    name: "uname"
+    parameters:
+      - "-a"
+  - &echo
+    name: "echo"
+    parameters: []
+  - &ping_google
+    name: "ping"
+    parameters:
+      - "-c"
+      - "3"
+      - "8.8.8.8"
+  - &traceroute_google
+    name: "traceroute"
+    parameters:
+      - "8.8.8.8"
+  - &disk_space_root
+    name: "df"
+    parameters:
+      - "-h"
+      - "/"
+  - &disk_usage_logs
+    name: "du"
+    parameters:
+      - "-sh"
+      - "/var/log"
+  - &memory_usage_macos
+    name: "top"
+    parameters:
+      - "-l"
+      - "1"
+      - "|"
+      - "grep"
+      - "PhysMem"
+  - &cpu_usage_macos
+    name: "top"
+    parameters:
+      - "-l"
+      - "1"
+      - "|"
+      - "grep"
+      - "'CPU usage'"
+  - &cpu_usage_linux
+    name: "top"
+    parameters:
+      - "-b"
+      - "-n"
+      - "1"
+      - "|"
+      - "grep"
+      - "'Cpu(s)'"
