@@ -7,3 +7,4 @@ __manifest__:
   requirements:
     - protobuf == v33.0
   tags: ["AUTOMATION"]
+commands:

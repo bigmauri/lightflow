@@ -1,0 +1,9 @@
+- &cpu_usage_linux
+  name: "top"
+  parameters:
+    - "-b"
+    - "-n"
+    - "1"
+    - "|"
+    - "grep"
+    - "'Cpu(s)'"

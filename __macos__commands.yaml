@@ -1,0 +1,16 @@
+- &memory_usage_macos
+  name: "top"
+  parameters:
+    - "-l"
+    - "1"
+    - "|"
+    - "grep"
+    - "PhysMem"
+- &cpu_usage_macos
+  name: "top"
+  parameters:
+    - "-l"
+    - "1"
+    - "|"
+    - "grep"
+    - "'CPU usage'"
