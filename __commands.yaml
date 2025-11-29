@@ -47,7 +47,7 @@ commands:
     parameters:
       - "-sh"
       - "/var/log"
-  - &memory_usage
+  - &memory_usage_macos
     name: "top"
     parameters:
       - "-l"
@@ -55,7 +55,7 @@ commands:
       - "|"
       - "grep"
       - "PhysMem"
-  - &cpu_usage
+  - &cpu_usage_macos
     name: "top"
     parameters:
       - "-l"
@@ -63,3 +63,12 @@ commands:
       - "|"
       - "grep"
       - "'CPU usage'"
+  - &cpu_usage_linux
+    name: "top"
+    parameters:
+      - "-b"
+      - "-n"
+      - "1"
+      - "|"
+      - "grep"
+      - "'Cpu(s)'"

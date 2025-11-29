@@ -20,16 +20,14 @@ sequence:
           type: "UNKNOWN"
           before_task:
             - *disk_space_root
-            - *memory_usage
-            - *cpu_usage
+            - *cpu_usage_linux
           commands:
             - *whoami
             - *registry_user_catalog
             - *whoami
           after_task:
             - *disk_space_root
-            - *memory_usage
-            - *cpu_usage
+            - *cpu_usage_linux
       after_pipeline:
         - name: "pipeline completed"
           type: "UNKNOWN"
