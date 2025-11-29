@@ -1,15 +1,9 @@
 commands:
-  - &registry_user
-    name: "USER=$(cut -d':' -f1 ~/.docker_registry_auth)"
-    parameters: []
-  - &registry_pwd
-    name: "PASS=$(cut -d':' -f2 ~/.docker_registry_auth)"
-    parameters: []
   - &registry_user_catalog
     name: "curl"
     parameters:
-       - "-u"
-       - "$USER:$PASS"
+       - "-K"
+       - "~/.docker_registry_auth"
        - "https://registry.home/v2/_catalog"
   - &clear
     name: "clear"

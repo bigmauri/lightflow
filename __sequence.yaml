@@ -24,8 +24,6 @@ sequence:
             - *memory_usage
             - *cpu_usage
           commands:
-            - *registry_user
-            - *registry_pwd
             - *registry_user_catalog
           after_task:
             - *disk_space_root
