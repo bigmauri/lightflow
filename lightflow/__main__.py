@@ -20,7 +20,7 @@ from lightflow.exe import execute_pipeline, run_temp_sh
 
 def serialize(args):
 
-    run_temp_sh("cat __header.yaml __commands.yaml __sequence.yaml > sequence.yaml")
+    run_temp_sh("cat __header.yaml *__commands.yaml __sequence.yaml > sequence.yaml")
     if args.compile:
         # commit = subprocess.run(
         #     ["git", "rev-parse", "--short", "HEAD"],
