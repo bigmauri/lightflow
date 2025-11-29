@@ -8,11 +8,21 @@ __manifest__:
     - protobuf == v33.0
   tags: ["AUTOMATION"]
 commands:
-  - &clear
-    name: "clear"
+  - &registry_user_catalog
+    name: "curl"
+    parameters:
+       - "-K"
+       - "/home/$(whoami)/.docker_registry_auth"
+       - "https://registry.home/v2/_catalog"
+  - &whoami
+    name: "whoami"
     parameters: []
   - &protoc_version
     name: "protoc"
+    parameters:
+      - "--version"
+  - &docker_version
+    name: "docker"
     parameters:
       - "--version"
   - &git_version
@@ -32,48 +42,10 @@ commands:
       - "-c"
       - "3"
       - "8.8.8.8"
-  - &ping_cloudflare
-    name: "ping"
-    parameters:
-      - "-c"
-      - "3"
-      - "1.1.1.1"
-  - &curl_google
-    name: "curl"
-    parameters:
-      - "-I"
-      - "-s"
-      - "-o"
-      - "/dev/null"
-      - "-w"
-      - "%{http_code}"
-      - "https://www.google.com"
-  - &curl_github
-    name: "curl"
-    parameters:
-      - "-I"
-      - "-s"
-      - "-o"
-      - "/dev/null"
-      - "-w"
-      - "%{http_code}"
-      - "https://www.github.com"
   - &traceroute_google
     name: "traceroute"
     parameters:
       - "8.8.8.8"
-  - &nc_google_http
-    name: "nc"
-    parameters:
-      - "-vz"
-      - "google.com"
-      - "80"
-  - &nc_github_https
-    name: "nc"
-    parameters:
-      - "-vz"
-      - "github.com"
-      - "443"
   - &disk_space_root
     name: "df"
     parameters:
@@ -84,7 +56,7 @@ commands:
     parameters:
       - "-sh"
       - "/var/log"
-  - &memory_usage
+  - &memory_usage_macos
     name: "top"
     parameters:
       - "-l"
@@ -92,7 +64,7 @@ commands:
       - "|"
       - "grep"
       - "PhysMem"
-  - &cpu_usage
+  - &cpu_usage_macos
     name: "top"
     parameters:
       - "-l"
@@ -100,11 +72,15 @@ commands:
       - "|"
       - "grep"
       - "'CPU usage'"
-  - &last_syslog_errors
-    name: "grep"
+  - &cpu_usage_linux
+    name: "top"
     parameters:
-      - "error"
-      - "/var/log/syslog"
+      - "-b"
+      - "-n"
+      - "1"
+      - "|"
+      - "grep"
+      - "'Cpu(s)'"
 sequence:
     - name: "[TEST] Lightflow with protobuf v33"
       env: "TEST"
@@ -117,24 +93,24 @@ sequence:
               parameters:
                   - "STARTED"
             - *protoc_version
+            - *docker_version
             - *git_version
           commands:
             - *ping_google
-            - *ping_cloudflare
           after_task: []
       tasks:
         - name: "Get server name"
           type: "UNKNOWN"
           before_task:
             - *disk_space_root
-            - *memory_usage
-            - *cpu_usage
+            - *cpu_usage_linux
           commands:
-            - *uname
+            - *whoami
+            - *registry_user_catalog
+            - *whoami
           after_task:
             - *disk_space_root
-            - *memory_usage
-            - *cpu_usage
+            - *cpu_usage_linux
       after_pipeline:
         - name: "pipeline completed"
           type: "UNKNOWN"

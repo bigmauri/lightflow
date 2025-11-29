@@ -22,7 +22,12 @@ def serialize(args):
 
     run_temp_sh("cat __header.yaml __commands.yaml __sequence.yaml > sequence.yaml")
     if args.compile:
-        rc, o, e = run_temp_sh("protoc --python_out=proto lightflow.proto")
+        # commit = subprocess.run(
+        #     ["git", "rev-parse", "--short", "HEAD"],
+        #     capture_output=True,
+        #     text=True
+        # ).stdout.strip()
+        rc, o, e = run_temp_sh(f"protoc --python_out=proto lightflow.proto")
         if rc > 0:
             raise Exception(f"Protobuf compile error: '{e}'")
     sequence_files = [_f for _f in os.listdir(".") if _f.startswith("sequence") and _f.endswith(".yaml")]
